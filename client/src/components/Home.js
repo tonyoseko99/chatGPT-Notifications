@@ -79,7 +79,14 @@ const Home = () => {
             name="subscriber"
             onChange={(e) => setSubscriber(e.target.value)}
           >
-            <option value="Select">Select</option>
+            {subscribers.map((subscriber) => (
+              <option
+                key={subscriber._id}
+                value={`${subscriber.firstName} ${subscriber.lastName} - ${subscriber.subscriberId}}}`}
+              >
+                Select
+              </option>
+            ))}
           </select>
           <button>SEND NOTIFICATION</button>
         </form>
