@@ -1,5 +1,8 @@
-import {createRequire} from 'module';
+import { createRequire } from "module";
 const require = createRequire(import.meta.url);
+
+const { Novu } = require("@novu/node");
+const novu = new Novu("f7fe9e0e5e162b8d832f276d21aa1729");
 
 const express = require("express");
 const cors = require("cors");
@@ -17,5 +20,5 @@ app.get("/api", (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server listening on the port::${port}`);
+  console.log(`Server listening on the port::${port}`);
 });
