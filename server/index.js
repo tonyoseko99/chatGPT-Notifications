@@ -55,6 +55,28 @@ app.post("/notify", (req, res) => {
   chatgptFunction(fullMessage, subscriberId, firstName, res);
 });
 
+//👇🏻 Holds the AI-generated notification
+let chatgptResult = "";
+
+//👇🏻 Function to generate the notification
+async function chatgptFunction(message, subscriberId, firstName, res) {
+  // use puppeteer to bypass cloudflare (headful because of captchas)
+  const api = new ChatGPTAPIBrowser({
+    email: "tonnyseko@gmail.com",
+    password: "Darka99_",
+  });
+
+  //👇🏻 Open up the login screen on the browser
+  await api.initSession();
+  const result = await api.sendMessage(message);
+  chatgptResult = result.response;
+
+  //👇🏻 Replace the user variable with the user's first name
+  const notificationString = chatgptResult.replace("{{user}}", firstName);
+
+  console.log(notificationString, subscriberId);
+}
+
 app.listen(port, () => {
   console.log(`Server listening on the port::${port}`);
 });
