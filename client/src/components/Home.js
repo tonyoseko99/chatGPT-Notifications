@@ -34,9 +34,28 @@ const Home = () => {
     fetchSubscribers();
   }, []);
 
+  // Makes the POST request to the server
+  async function sendNotification() {
+    try {
+      const request = await fetch("/notify", {
+        method: "POST",
+        body: JSON.stringify({ message, subscriber }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await request.json();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  //👇🏻 Handles the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ message, subscriber });
+    sendNotification();
     setMessage("");
     setSubscriber("");
   };
