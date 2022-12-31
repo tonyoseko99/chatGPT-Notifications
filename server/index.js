@@ -74,7 +74,25 @@ async function chatgptFunction(message, subscriberId, firstName, res) {
   //👇🏻 Replace the user variable with the user's first name
   const notificationString = chatgptResult.replace("{{user}}", firstName);
 
-  console.log(notificationString, subscriberId);
+  //👇🏻 Pass the necessary variables as parameters
+  sendNotification(notificationString, subscriberId, res);
+}
+
+//👇🏻 Sends the notification via Novu
+async function sendNotification(data, subscriberId, res) {
+  try {
+    let result = await novu.trigger("", {
+      to: {
+        subscriberId: subscriberId,
+      },
+      payload: {
+        message: data,
+      },
+    });
+    return res.json({ message: result });
+  } catch (err) {
+    return res.json({ error_message: err });
+  }
 }
 
 app.listen(port, () => {
