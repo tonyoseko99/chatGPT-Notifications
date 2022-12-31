@@ -19,6 +19,21 @@ app.get("/api", (req, res) => {
   });
 });
 
+app.get("/subscribers", async (req, res) => {
+  try {
+    const { data } = await novu.subscribers.list(0);
+    const resultData = data.data;
+
+    // return subscribers with their ids, first name and last name
+    const subscribers = resultData.filter((d) => {
+      return d.subscriberId && d.firstName && d.lastName;
+    });
+    res.json(subscribers);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server listening on the port::${port}`);
 });
