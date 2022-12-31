@@ -1,6 +1,18 @@
 import React, { useState } from "react";
+import {
+  NovuProvider,
+  PopoverNotificationCenter,
+  NotificationBell,
+} from "@novu/notification-center";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const onNotificationClick = (notification) => {
+    navigate(notification.cta.data.url);
+  };
+
   const [message, setMessage] = useState("");
   const [subscriber, setSubscriber] = useState("");
 
@@ -15,6 +27,16 @@ const Home = () => {
     <div className="home">
       <nav className="navbar">
         <h2>Notify</h2>
+        <NovuProvider
+          subscriberId={"<YOUR_SUBSCRIBER_ID>"}
+          applicationIdentifier={"<YOUR_APP_ID>"}
+        >
+          <PopoverNotificationCenter onNotificationClick={onNotificationClick}>
+            {({ unseenCount }) => (
+              <NotificationBell unseenCount={unseenCount} colorScheme="light" />
+            )}
+          </PopoverNotificationCenter>
+        </NovuProvider>
       </nav>
       <main className="homeContainer">
         <h3>Send notifications to your users</h3>
