@@ -34,6 +34,24 @@ app.get("/subscribers", async (req, res) => {
   }
 });
 
+app.post("/notify", (req, res) => {
+  //👇🏻 Destructure the message and subscriber from the object
+  const { message, subscriber } = req.body;
+
+  //👇🏻 Separates the first name and the subscriber ID
+  const subscriberDetails = subscriber.split(" ");
+  const firstName = subscriberDetails[0];
+  const subscriberId = subscriberDetails[3];
+
+  //👇🏻 Added some specifications to the message to enable the AI generate a concise notification.
+  const fullMessage = `I have a notification system and I want to send the user a notification about "${message}" 
+    can you write me one? please use double curly brackets for variables. make it short, and use only one variable for the user name.
+    Please just write 1 notification without any intro.`;
+
+  //👇🏻 Log the required variables to the console
+  console.log({ firstName, subscriberId, fullMessage });
+});
+
 app.listen(port, () => {
   console.log(`Server listening on the port::${port}`);
 });
