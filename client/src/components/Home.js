@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   NovuProvider,
   PopoverNotificationCenter,
@@ -15,6 +15,24 @@ const Home = () => {
 
   const [message, setMessage] = useState("");
   const [subscriber, setSubscriber] = useState("");
+  //👇🏻 State representing the list of subscribers
+  const [subscribers, setSubscribers] = useState([
+    { firstName: "", lastName: "", subscriberId: "Select", _id: "null" },
+  ]);
+
+  //👇🏻 Fetch the list of subscribers on page load
+  useEffect(() => {
+    async function fetchSubscribers() {
+      try {
+        const request = await fetch("/subscribers");
+        const response = await request.json();
+        setSubscribers([...subscribers, ...response]);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchSubscribers();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,8 +46,8 @@ const Home = () => {
       <nav className="navbar">
         <h2>Notify</h2>
         <NovuProvider
-          subscriberId={"<YOUR_SUBSCRIBER_ID>"}
-          applicationIdentifier={"<YOUR_APP_ID>"}
+          subscriberId={"63b09e91b12729443b4add9b"}
+          applicationIdentifier={"IA83uamTXILA"}
         >
           <PopoverNotificationCenter onNotificationClick={onNotificationClick}>
             {({ unseenCount }) => (
