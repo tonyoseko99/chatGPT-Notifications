@@ -50,6 +50,9 @@ app.post("/notify", (req, res) => {
 
   //👇🏻 Log the required variables to the console
   console.log({ firstName, subscriberId, fullMessage });
+
+  //👇🏻 Pass the variables as a parameter into the function
+  chatgptFunction(fullMessage, subscriberId, firstName, res);
 });
 
 app.listen(port, () => {
